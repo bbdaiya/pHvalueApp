@@ -1,5 +1,6 @@
 package com.example.bbdaiya.phvalue;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -32,6 +33,7 @@ import java.util.ArrayList;
 public class MainActivityFragment extends Fragment {
     ArrayList<Data> values = new ArrayList<>();
     Button get_last_value;
+    Button get_all;
     TextView value_text_view;
     public MainActivityFragment() {
     }
@@ -44,11 +46,21 @@ public class MainActivityFragment extends Fragment {
         View rootview = inflater.inflate(R.layout.fragment_main, container, false);
         get_last_value = (Button) rootview.findViewById(R.id.get_last_value_button);
         value_text_view = (TextView) rootview.findViewById(R.id.value_text_view);
+        get_all = (Button) rootview.findViewById(R.id.get_all_button);
         get_last_value.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 value_text_view.setText("pH value: "+values.get(values.size()-1).getValue()+
                 "\nDate Added: "+values.get(values.size()-1).getDate_added());
+            }
+        });
+        get_all.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), ListViewActitvity.class);
+                Log.v(MainActivityFragment.class.getSimpleName(), values.get(0).getValue());
+                intent.putParcelableArrayListExtra("list", values);
+                startActivity(intent);
             }
         });
         return rootview;
