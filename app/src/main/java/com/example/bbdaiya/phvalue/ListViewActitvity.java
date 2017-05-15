@@ -50,6 +50,7 @@ public class ListViewActitvity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.sort_by_value_asc) {
+
             Collections.sort(values, new Comparator<Data>() {
                 @Override
                 public int compare(Data o1, Data o2) {
@@ -71,11 +72,13 @@ public class ListViewActitvity extends AppCompatActivity {
             return true;
         }
         if (id == R.id.show_latest) {
+
             recyclerView.setAdapter(adapter);
             return true;
         }
         if (id == R.id.show_oldest) {
             Collections.reverse(values);
+
             recyclerView.setAdapter(adapter);
             return true;
         }
