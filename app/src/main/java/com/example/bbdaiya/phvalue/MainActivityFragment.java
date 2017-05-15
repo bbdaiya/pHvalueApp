@@ -35,6 +35,7 @@ public class MainActivityFragment extends Fragment {
     Button get_last_value;
     Button get_all;
     TextView value_text_view;
+    final String LOG = MainActivityFragment.class.getSimpleName();
     public MainActivityFragment() {
     }
 
@@ -58,7 +59,10 @@ public class MainActivityFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), ListViewActitvity.class);
-                Log.v(MainActivityFragment.class.getSimpleName(), values.get(0).getValue());
+                for(int i = 0; i < values.size(); i++){
+                    Log.v(LOG, i+" "+values.get(i).getValue());
+                }
+                Log.v(MainActivityFragment.class.getSimpleName(), "main activity "+values.get(values.size()-1).getValue());
                 intent.putParcelableArrayListExtra("list", values);
                 startActivity(intent);
             }
@@ -187,11 +191,13 @@ public class MainActivityFragment extends Fragment {
 
 //                Element val = td.get(0);
 //                Log.v(LOG, val.text());
-                Data data = new Data(
-                        val,
-                        date
-                );
-                result.add(data);
+                if(!val.equals("")) {
+                    Data data = new Data(
+                            val,
+                            date
+                    );
+                    result.add(data);
+                }
             }
             return result;
         }

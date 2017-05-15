@@ -10,6 +10,7 @@ package com.example.bbdaiya.phvalue;
         import android.content.Context;
         import android.support.v7.widget.RecyclerView;
 
+        import android.util.Log;
         import android.view.LayoutInflater;
         import android.view.View;
         import android.view.ViewGroup;
@@ -19,6 +20,7 @@ package com.example.bbdaiya.phvalue;
 
 
 public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
+    final String LOG = Adapter.class.getSimpleName();
     private Context mContext;
     private ArrayList<Data> results = new ArrayList<>();
     public Adapter(Context mContext, ArrayList<Data> results) {
@@ -40,6 +42,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
 
         String val = results.get(position).getValue();
         String date = results.get(position).getDate_added();
+        Log.v(LOG, "Adapter "+val+" "+date);
         holder.phValue.setText(val);
         holder.date.setText(date);
     }

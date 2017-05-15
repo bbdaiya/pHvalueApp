@@ -19,7 +19,7 @@ public class ListViewActitvity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_view_actitvity);
         ArrayList<Data> values = getIntent().getParcelableArrayListExtra("list");
-        Log.v(LOG, values.get(0).getValue());
+        Log.v(LOG, "value "+values.get(0).getValue());
         recyclerView = (RecyclerView)findViewById(R.id.recycler_view);
         Adapter adapter = new Adapter(getApplicationContext(), values);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
