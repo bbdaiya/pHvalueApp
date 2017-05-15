@@ -1,6 +1,9 @@
 package com.example.bbdaiya.phvalue;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -11,6 +14,7 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.jsoup.Jsoup;
@@ -42,8 +46,10 @@ public class MainActivityFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        FetchData fetchData = new FetchData();
-        fetchData.execute();
+        if (Utils.checkConnection(getContext())){
+            FetchData fetchData = new FetchData();
+            fetchData.execute();
+        }
         View rootview = inflater.inflate(R.layout.fragment_main, container, false);
         get_last_value = (Button) rootview.findViewById(R.id.get_last_value_button);
         value_text_view = (TextView) rootview.findViewById(R.id.value_text_view);
@@ -51,20 +57,28 @@ public class MainActivityFragment extends Fragment {
         get_last_value.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                value_text_view.setText("pH value: "+values.get(values.size()-1).getValue()+
-                "\nDate Added: "+values.get(values.size()-1).getDate_added());
+                if(values.size()>0) {
+                    value_text_view.setText("pH value: " + values.get(0).getValue() +
+                            "\nDate Added: " + values.get(0).getDate_added());
+                }
+                else{
+                    Toast.makeText(getContext(), "Loading data... Try Again", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         get_all.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getContext(), ListViewActitvity.class);
-                for(int i = 0; i < values.size(); i++){
-                    Log.v(LOG, i+" "+values.get(i).getValue());
+                if(values.size()>0) {
+                    Intent intent = new Intent(getContext(), ListViewActitvity.class);
+                    Log.v(MainActivityFragment.class.getSimpleName(), "main activity " + values.get(values.size() - 1).getValue());
+                    intent.putParcelableArrayListExtra("list", values);
+                    startActivity(intent);
                 }
-                Log.v(MainActivityFragment.class.getSimpleName(), "main activity "+values.get(values.size()-1).getValue());
-                intent.putParcelableArrayListExtra("list", values);
-                startActivity(intent);
+                else{
+                    Toast.makeText(getContext(), "Loading data... Try Again", Toast.LENGTH_SHORT).show();
+
+                }
             }
         });
         return rootview;
@@ -93,42 +107,8 @@ public class MainActivityFragment extends Fragment {
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");
                 urlConnection.connect();
-//                if(urlConnection.getResponseCode()==401){
-//                    if(Utils.checkConnection(getContext())){
-//                        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-//                                getContext());
-//
-//                        // set title
-//                        alertDialogBuilder.setTitle(getContext().getString(R.string.api_key));
-//
-//                        // set dialog message
-//                        alertDialogBuilder
-//                                .setMessage(getContext().getString(R.string.invalid_api_key))
-//                                .setCancelable(false)
-//                                .setPositiveButton(getContext().getString(R.string.exit),new DialogInterface.OnClickListener() {
-//                                    public void onClick(DialogInterface dialog,int id) {
-//                                        // if this button is clicked, close
-//                                        // current activity
-//                                        Intent intent = new Intent(getContext(), MainActivity.class);
-//                                        intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP);
-//                                        getContext().startActivity(intent);
-//                                    }
-//                                });
-//
-//                        Activity activity = getActivity();
-//                        activity.runOnUiThread(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                // create alert dialog
-//                                AlertDialog alertDialog = alertDialogBuilder.create();
-//
-//                                // show it
-//                                alertDialog.show();
-//                            }
-//                        });
-//
-//                    }
-//                }
+                Log.v(LOG, String.valueOf(urlConnection.getResponseCode()));
+
                 InputStream is = urlConnection.getInputStream();
                 StringBuffer buffer = new StringBuffer();
                 if(is==null){
@@ -162,8 +142,10 @@ public class MainActivityFragment extends Fragment {
                     }
                 }
             }
-
-            return getDataFromHtml(datahtml);
+            if(datahtml!=null) {
+                return getDataFromHtml(datahtml);
+            }
+            return null;
 
 
         }

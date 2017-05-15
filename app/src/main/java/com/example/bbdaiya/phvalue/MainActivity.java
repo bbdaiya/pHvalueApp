@@ -1,5 +1,7 @@
 package com.example.bbdaiya.phvalue;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -11,14 +13,39 @@ import android.view.MenuItem;
 import android.webkit.WebView;
 
 public class MainActivity extends AppCompatActivity {
-
+    AlertDialog alertDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        if(!Utils.checkConnection(MainActivity.this)){
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                    MainActivity.this);
 
+            // set title
+            alertDialogBuilder.setTitle(getString(R.string.connectivity));
+
+            // set dialog message
+            alertDialogBuilder
+                    .setMessage(getString(R.string.no_internet))
+                    .setCancelable(false)
+                    .setPositiveButton(getString(R.string.exit),new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog,int id) {
+                            // if this button is clicked, close
+                            // current activity
+                            MainActivity.this.finish();
+                        }
+                    });
+
+
+            // create alert dialog
+            alertDialog = alertDialogBuilder.create();
+
+            // show it
+            alertDialog.show();
+        }
     }
 
     @Override

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+   >
+    <item android:id="@+id/sort_by_value_asc"
+        android:title="@string/sort_by_value_asc"
+        app:showAsAction="never" />
+    <item android:id="@+id/sort_by_value_desc"
+        android:title="@string/sort_by_value_desc"
+        app:showAsAction="never" />
+    <item android:id="@+id/show_latest"
+        android:title="@string/show_latest"
+        app:showAsAction="never" />
+    <item android:id="@+id/show_oldest"
+        android:title="@string/show_oldest"
+        app:showAsAction="never" />
+</menu>

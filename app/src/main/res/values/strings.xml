@@ -3,4 +3,11 @@
     <string name="action_settings">Settings</string>
     <string name="get_all">Get All Values</string>
     <string name="get_last">Get Last Value</string>
+    <string name="sort_by_value_asc">Sort by Values Asc</string>
+    <string name="sort_by_value_desc">Sort by Values Desc</string>
+    <string name="show_latest">Show Latest</string>
+    <string name="show_oldest">Show Oldest</string>
+    <string name="connectivity">Connectivity</string>
+    <string name="no_internet">No Internet connectivity!!</string>
+    <string name="exit">Exit</string>
 </resources>
